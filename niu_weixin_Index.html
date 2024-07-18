@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>牛牛计算器</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f0f0f0;
+            margin: 0;
+        }
+        .container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            max-width: 300px;
+            width: 100%;
+        }
+        input {
+            margin: 5px 0;
+            padding: 8px;
+            width: calc(100% - 16px);
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        button {
+            margin: 10px 0;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            background-color: #007bff;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            box-sizing: border-box;
+        }
+        button:hover {
+            background-color: #0056b3;
+        }
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>牛牛计算器</h2>
+    <input type="text" id="card1" placeholder="输入第一张牌 (1-10)">
+    <input type="text" id="card2" placeholder="输入第二张牌 (1-10)">
+    <input type="text" id="card3" placeholder="输入第三张牌 (1-10)">
+    <input type="text" id="card4" placeholder="输入第四张牌 (1-10)">
+    <input type="text" id="card5" placeholder="输入第五张牌 (1-10)">
+    <button onclick="calculateNiuNiu()">计算结果</button>
+    <div class="result" id="result"></div>
+</div>
+
+<script>
+function calculateNiuNiu() {
+    // 获取输入的牌
+    let card1 = parseInt(document.getElementById('card1').value);
+    let card2 = parseInt(document.getElementById('card2').value);
+    let card3 = parseInt(document.getElementById('card3').value);
+    let card4 = parseInt(document.getElementById('card4').value);
+    let card5 = parseInt(document.getElementById('card5').value);
+    
+    // 检查输入是否有效
+    if (isNaN(card1) || isNaN(card2) || isNaN(card3) || isNaN(card4) || isNaN(card5)) {
+        document.getElementById('result').innerText = '请输入有效的牌 (1-10)';
+        return;
+    }
+
+    let cards = [card1, card2, card3, card4, card5];
+    let result = getNiuNiuResult(cards);
+    document.getElementById('result').innerText = result;
+}
+
+function getNiuNiuResult(cards) {
+    let sum = cards.reduce((a, b) => a + b, 0);
+    for (let i = 0; i < cards.length - 2; i++) {
+        for (let j = i + 1; j < cards.length - 1; j++) {
+            for (let k = j + 1; k < cards.length; k++) {
+                if ((cards[i] + cards[j] + cards[k]) % 10 === 0) {
+                    let niu = (sum - cards[i] - cards[j] - cards[k]) % 10;
+                    return niu === 0 ? '牛牛' : '牛' + niu;
+                }
+            }
+        }
+    }
+    return '无牛';
+}
+</script>
+
+</body>
+</html>
